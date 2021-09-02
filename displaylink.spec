@@ -14,6 +14,11 @@
 
 %global evdi_version 1.9.1
 
+# systemd 248+
+%if 0%{?rhel} == 8
+%global _systemd_util_dir %{_prefix}/lib/systemd
+%endif
+
 Name:       displaylink
 Version:    5.4
 Release:    1
