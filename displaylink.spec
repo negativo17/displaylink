@@ -13,6 +13,7 @@
 %endif
 
 %global evdi_version 1.9.1
+%global release_date 2021-04
 
 # systemd 248+
 %if 0%{?rhel} == 8
@@ -21,13 +22,13 @@
 
 Name:       displaylink
 Version:    5.4
-Release:    1
+Release:    1%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
 # https://www.synaptics.com/products/displaylink-graphics/downloads/ubuntu
-Source0:    https://www.synaptics.com/sites/default/files/exe_files/2021-04/DisplayLink USB Graphics Software for Ubuntu%{version}-EXE.zip#/%{name}-%{version}.zip
-Source1:    https://www.synaptics.com/sites/default/files/release_notes/2021-04/DisplayLink USB Graphics Software for Ubuntu%{version}-Release Notes.txt#/%{name}-%{version}.txt
+Source0:    https://www.synaptics.com/sites/default/files/exe_files/%{release_date}/DisplayLink USB Graphics Software for Ubuntu%{version}-EXE.zip#/%{name}-%{version}.zip
+Source1:    https://www.synaptics.com/sites/default/files/release_notes/%{release_date}/DisplayLink USB Graphics Software for Ubuntu%{version}-Release Notes.txt#/%{name}-%{version}.txt
 
 Source10:   99-%{name}.rules
 Source11:   %{name}.service
@@ -43,8 +44,8 @@ BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  systemd-rpm-macros
 
-Requires:   evdi-kmod == %{evdi_version}
-Requires:   libevdi == %{evdi_version}
+Requires:   evdi-kmod >= %{evdi_version}
+Requires:   libevdi >= %{evdi_version}
 Requires:   libusbx%{?_isa}
 Requires:   logrotate
 Requires:   xorg-x11-server-Xorg
