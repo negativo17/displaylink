@@ -13,7 +13,7 @@
 %endif
 
 %global evdi_version 1.9.1
-%global release_date 2021-04
+%global release_date 2021-09
 
 # systemd 248+
 %if 0%{?rhel} == 8
@@ -21,7 +21,7 @@
 %endif
 
 Name:       displaylink
-Version:    5.4
+Version:    5.4.1
 Release:    1%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
@@ -111,7 +111,7 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %systemd_postun_with_restart %{name}.service
 
 %files
-%license LICENSE
+%license LICENSE 3rd_party_licences.txt
 %doc %{name}-%{version}.txt
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_unitdir}/displaylink.service
@@ -123,5 +123,8 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Sat Sep 11 2021 Simone Caronni <negativo17@gmail.com> - 5.4.1-1
+- Update to 5.4.1.
+
 * Tue Apr 13 2021 Simone Caronni <negativo17@gmail.com> - 5.4-1
 - First build.
