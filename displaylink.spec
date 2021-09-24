@@ -22,7 +22,7 @@
 
 Name:       displaylink
 Version:    5.4.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -40,6 +40,7 @@ Source15:   %{name}.logrotate
 
 ExclusiveArch:  %{ix86} x86_64 armv7hl
 
+BuildRequires:  chrpath
 BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  systemd-rpm-macros
@@ -68,6 +69,8 @@ find . -name "libusb*.so*" -delete
 chmod -x LICENSE
 
 cp %{SOURCE1} .
+
+chrpath -d %{ub_folder}/DisplayLinkManager
 
 %build
 # Nothing to build.
@@ -123,6 +126,9 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Fri Sep 24 2021 Simone Caronni <negativo17@gmail.com> - 5.4.1-2
+- Remove Runpath.
+
 * Sat Sep 11 2021 Simone Caronni <negativo17@gmail.com> - 5.4.1-1
 - Update to 5.4.1.
 
