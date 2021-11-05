@@ -22,7 +22,7 @@
 
 Name:       displaylink
 Version:    5.4.1
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -47,7 +47,6 @@ BuildRequires:  systemd-rpm-macros
 
 Requires:   evdi-kmod >= %{evdi_version}
 Requires:   libevdi >= %{evdi_version}
-Requires:   libusbx%{?_isa}
 Requires:   logrotate
 Requires:   xorg-x11-server-Xorg
 
@@ -126,6 +125,9 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Fri Nov 05 2021 Simone Caronni <negativo17@gmail.com> - 5.4.1-3
+- Do not use hard requirement on libusb, let RPM pick it up.
+
 * Fri Sep 24 2021 Simone Caronni <negativo17@gmail.com> - 5.4.1-2
 - Remove Runpath.
 
