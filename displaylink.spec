@@ -12,8 +12,11 @@
 %global ub_folder arm-linux-gnueabihf
 %endif
 
-%global evdi_version 1.9.1
-%global release_date 2021-09
+%ifarch aarch64
+%global ub_folder aarch64-linux-gnu
+%endif
+
+%global evdi_version 1.10.0
 
 # systemd 248+
 %if 0%{?rhel} == 8
@@ -21,14 +24,13 @@
 %endif
 
 Name:       displaylink
-Version:    5.4.1
-Release:    3%{?dist}
+Version:    5.5.0
+Release:    1%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
-# https://www.synaptics.com/products/displaylink-graphics/downloads/ubuntu
-Source0:    https://www.synaptics.com/sites/default/files/exe_files/%{release_date}/DisplayLink USB Graphics Software for Ubuntu%{version}-EXE.zip#/%{name}-%{version}.zip
-Source1:    https://www.synaptics.com/sites/default/files/release_notes/%{release_date}/DisplayLink USB Graphics Software for Ubuntu%{version}-Release Notes.txt#/%{name}-%{version}.txt
+Source0:    %{name}-%{version}.tar.xz
+Source1:    %{name}-generate-tarball.sh
 
 Source10:   99-%{name}.rules
 Source11:   %{name}.service
@@ -58,16 +60,9 @@ DL-5xxx, DL-41xx and DL-3xxx series of chipsets. This includes numerous docking
 stations, USB monitors, and USB adapters.
 
 %prep
-%autosetup -c %{name}-%{version}
-
-chmod +x displaylink-driver-%{version}*.run
-./displaylink-driver-%{version}*.run --noexec --keep --target .
-rm -f evdi.tar.gz *.run
-find . -name "libusb*.so*" -delete
+%autosetup
 
 chmod -x LICENSE
-
-cp %{SOURCE1} .
 
 chrpath -d %{ub_folder}/DisplayLinkManager
 
@@ -114,7 +109,7 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 %files
 %license LICENSE 3rd_party_licences.txt
-%doc %{name}-%{version}.txt
+%doc DisplayLink*.txt
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_unitdir}/displaylink.service
 %{_presetdir}/95-%{name}.preset
@@ -125,6 +120,10 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Fri Jan 21 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-1
+- Update to 5.5 beta.
+- Add aarch64 and CentOS/RHEL 8+ build.
+
 * Fri Nov 05 2021 Simone Caronni <negativo17@gmail.com> - 5.4.1-3
 - Do not use hard requirement on libusb, let RPM pick it up.
 
