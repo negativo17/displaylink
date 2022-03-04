@@ -16,7 +16,7 @@
 %global ub_folder aarch64-linux-gnu
 %endif
 
-%global evdi_version 1.10.0
+%global evdi_version 1.10.1
 
 # systemd 248+
 %if 0%{?rhel} == 8
@@ -25,7 +25,7 @@
 
 Name:       displaylink
 Version:    5.5.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -120,6 +120,9 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Fri Mar 04 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-2
+- Update evdi provider version.
+
 * Fri Jan 21 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-1
 - Update to 5.5 beta.
 - Add aarch64 and CentOS/RHEL 8+ build.
