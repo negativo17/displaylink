@@ -25,7 +25,7 @@
 
 Name:       displaylink
 Version:    5.5.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -40,7 +40,7 @@ Source13:   95-%{name}.preset
 Source14:   20-%{name}.conf
 Source15:   %{name}.logrotate
 
-ExclusiveArch:  %{ix86} x86_64 armv7hl
+ExclusiveArch:  %{ix86} x86_64 armv7hl aarch64
 
 BuildRequires:  chrpath
 BuildRequires:  gcc-c++
@@ -120,6 +120,9 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Sat Mar 12 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-3
+- Add missing aarch64 to allowed architectures.
+
 * Fri Mar 04 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-2
 - Update evdi provider version.
 
