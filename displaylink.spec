@@ -19,7 +19,7 @@
 %global evdi_version 1.10.1
 
 # systemd 248+
-%if 0%{?rhel} == 8
+%if 0%{?rhel} == 7 || 0%{?rhel} == 8
 %global _systemd_util_dir %{_prefix}/lib/systemd
 %endif
 
@@ -122,6 +122,7 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %changelog
 * Sat Mar 12 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-3
 - Add missing aarch64 to allowed architectures.
+- Fix building on RHEL/CentOS 7.
 
 * Fri Mar 04 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-2
 - Update evdi provider version.
