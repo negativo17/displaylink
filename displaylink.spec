@@ -25,7 +25,7 @@
 
 Name:       displaylink
 Version:    5.5.0
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -82,7 +82,7 @@ mkdir -p \
 
 # Main binary and firmware
 install -p -m755 %{ub_folder}/DisplayLinkManager %{buildroot}%{_libexecdir}/%{name}/
-install -p -m644 ella-dock-release.spkg firefly-monitor-release.spkg ridge-dock-release.spkg %{buildroot}%{_libexecdir}/%{name}/
+install -p -m644 *.spkg %{buildroot}%{_libexecdir}/%{name}/
 
 # udev rules
 cp -a %{SOURCE10} %{buildroot}%{_udevrulesdir}/
@@ -120,6 +120,9 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Mon Mar 14 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-4
+- Update to final 5.5.0 release.
+
 * Sat Mar 12 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-3
 - Add missing aarch64 to allowed architectures.
 - Fix building on RHEL/CentOS 7.
