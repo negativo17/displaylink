@@ -16,8 +16,6 @@
 %global ub_folder aarch64-linux-gnu
 %endif
 
-%global evdi_version 1.10.1
-
 # systemd 248+
 %if 0%{?rhel} == 7 || 0%{?rhel} == 8
 %global _systemd_util_dir %{_prefix}/lib/systemd
@@ -25,7 +23,7 @@
 
 Name:       displaylink
 Version:    5.5.0
-Release:    4%{?dist}
+Release:    5%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -47,12 +45,12 @@ BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  systemd-rpm-macros
 
-Requires:   evdi-kmod >= %{evdi_version}
-Requires:   libevdi >= %{evdi_version}
+Requires:   evdi-kmod >= 1.10
+Requires:   libevdi >= 1.10
 Requires:   logrotate
 Requires:   xorg-x11-server-Xorg
 
-Provides:   evdi-kmod-common == %{evdi_version}
+Provides:   evdi-kmod-common >= 1.10
 
 %description
 This adds support for HDMI/VGA adapters built upon the DisplayLink DL-6xxx,
@@ -120,6 +118,9 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Mon May 02 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-5
+- Allow upgrading open source components separately.
+
 * Mon Mar 14 2022 Simone Caronni <negativo17@gmail.com> - 5.5.0-4
 - Update to final 5.5.0 release.
 
