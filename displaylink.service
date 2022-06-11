@@ -9,3 +9,6 @@ ExecStart=/usr/libexec/displaylink/DisplayLinkManager
 Restart=always
 WorkingDirectory=/usr/libexec/displaylink
 RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
