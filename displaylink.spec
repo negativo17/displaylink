@@ -23,7 +23,7 @@
 
 Name:       displaylink
 Version:    5.6.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -118,6 +118,10 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Thu Jun 16 2022 Simone Caronni <negativo17@gmail.com> - 5.6.0-2
+- Add Install section to systemd unit to allow using it as a normal unit and not
+  on hotplug events.
+
 * Tue May 24 2022 Simone Caronni <negativo17@gmail.com> - 5.6.0-1
 - Update to 5.6.0.
 
