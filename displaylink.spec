@@ -22,7 +22,7 @@
 %endif
 
 Name:       displaylink
-Version:    5.6.1
+Version:    5.7.0
 Release:    1%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
@@ -45,12 +45,12 @@ BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  systemd-rpm-macros
 
-Requires:   evdi-kmod >= 1.12.0
-Requires:   libevdi >= 1.12.0
+Requires:   evdi-kmod >= 1.13.1
+Requires:   libevdi >= 1.13.1
 Requires:   logrotate
 Requires:   xorg-x11-server-Xorg
 
-Provides:   evdi-kmod-common >= 1.12.0
+Provides:   evdi-kmod-common >= 1.13.1
 
 %description
 This adds support for HDMI/VGA adapters built upon the DisplayLink DL-6xxx,
@@ -118,6 +118,9 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Thu Apr 20 2023 Simone Caronni <negativo17@gmail.com> - 5.7.1-1
+- Update to 5.7.0.
+
 * Mon Aug 15 2022 Simone Caronni <negativo17@gmail.com> - 5.6.1-1
 - Update to 5.6.1.
 
