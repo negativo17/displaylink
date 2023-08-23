@@ -2,8 +2,8 @@
 
 # https://www.synaptics.com/products/displaylink-graphics/downloads/ubuntu
 
-VERSION=5.7.0
-ZIP=https://www.synaptics.com/sites/default/files/exe_files/2023-04/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu5.7-EXE.zip
+VERSION=5.8.0
+ZIP=https://www.synaptics.com/sites/default/files/exe_files/2023-08/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu5.8-EXE.zip
 
 mkdir displaylink-$VERSION
 pushd displaylink-$VERSION
