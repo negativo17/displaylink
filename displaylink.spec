@@ -41,8 +41,6 @@ Source15:   %{name}.logrotate
 ExclusiveArch:  %{ix86} x86_64 armv7hl aarch64
 
 BuildRequires:  chrpath
-BuildRequires:  gcc-c++
-BuildRequires:  make
 BuildRequires:  systemd-rpm-macros
 
 Requires:   evdi-kmod >= 1.14.1
@@ -120,6 +118,7 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %changelog
 * Wed Sep 06 2023 Simone Caronni <negativo17@gmail.com> - 5.8.0-2
 - Fix evdi requirements.
+- Drop leftover build requirements.
 
 * Wed Aug 23 2023 Simone Caronni <negativo17@gmail.com> - 5.8.0-1
 - Update to 5.8.0.
