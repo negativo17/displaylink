@@ -22,8 +22,8 @@
 %endif
 
 Name:       displaylink
-Version:    5.8.0
-Release:    3%{?dist}
+Version:    6.0.0
+Release:    1%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -118,6 +118,9 @@ echo "options evdi initial_device_count=4" > %{buildroot}%{_modprobedir}/display
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Sat May 04 2024 Simone Caronni <negativo17@gmail.com> - 6.0.0-1
+- Update to 6.0.0.
+
 * Wed Sep 06 2023 Simone Caronni <negativo17@gmail.com> - 5.8.0-2
 - Fix evdi requirements.
 - Drop leftover build requirements.
