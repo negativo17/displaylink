@@ -23,13 +23,14 @@
 
 Name:       displaylink
 Version:    6.0.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
 Source0:    %{name}-%{version}.tar.xz
 Source1:    %{name}-generate-tarball.sh
 
+Source10:   99-%{name}.rules
 Source11:   %{name}.service
 # Extracted from service-installer.sh:
 Source12:   %{name}
@@ -67,8 +68,7 @@ chrpath -d %{ub_folder}/DisplayLinkManager
 %install
 mkdir -p \
     %{buildroot}%{_libexecdir}/%{name}/ \
-    %{buildroot}%{_modprobedir} \
-    %{buildroot}%{_modulesloaddir} \
+    %{buildroot}%{_udevrulesdir}/ \
     %{buildroot}%{_unitdir}/ \
     %{buildroot}%{_presetdir}/ \
     %{buildroot}%{_systemd_util_dir}/system-sleep/ \
@@ -80,6 +80,9 @@ mkdir -p \
 install -p -m755 %{ub_folder}/DisplayLinkManager %{buildroot}%{_libexecdir}/%{name}/
 install -p -m644 *.spkg %{buildroot}%{_libexecdir}/%{name}/
 
+# udev rules
+cp -a %{SOURCE10} %{buildroot}%{_udevrulesdir}/
+
 # systemd stuff
 install -p -m644 %{SOURCE11} %{buildroot}%{_unitdir}/
 install -p -m755 %{SOURCE12} %{buildroot}%{_systemd_util_dir}/system-sleep/%{name}
@@ -90,10 +93,6 @@ cp -a %{SOURCE14} %{buildroot}%{_sysconfdir}/X11/xorg.conf.d/
 
 # logrotate
 cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
-
-# evdi module loading
-echo "evdi" > %{buildroot}%{_modulesloaddir}/displaylink.conf
-echo "options evdi initial_device_count=4" > %{buildroot}%{_modprobedir}/displaylink.conf
 
 %post
 %systemd_post %{name}.service
@@ -108,27 +107,24 @@ echo "options evdi initial_device_count=4" > %{buildroot}%{_modprobedir}/display
 %license LICENSE 3rd_party_licences.txt
 %doc DisplayLink*.txt
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
-%{_modprobedir}/%{name}.conf
-%{_modulesloaddir}/%{name}.conf
-%{_unitdir}/%{name}.service
+%{_unitdir}/displaylink.service
 %{_presetdir}/95-%{name}.preset
 %{_systemd_util_dir}/system-sleep/%{name}
+%{_udevrulesdir}/99-%{name}.rules
 %{_sysconfdir}/X11/xorg.conf.d/20-%{name}.conf
 %{_libexecdir}/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
 %changelog
+* Mon May 13 2024 Simone Caronni <negativo17@gmail.com> - 6.0.0-2
+- Re-enable start/stop service based on USB insertions/removals (#2).
+
 * Sat May 04 2024 Simone Caronni <negativo17@gmail.com> - 6.0.0-1
 - Update to 6.0.0.
 
 * Wed Sep 06 2023 Simone Caronni <negativo17@gmail.com> - 5.8.0-2
 - Fix evdi requirements.
 - Drop leftover build requirements.
-
-* Wed Sep 06 2023 Simone Caronni <negativo17@gmail.com> - 5.8.0-3
-- Do not start/stop service based on USB insertions/removals:
-  * Service is always started with a preset.
-  * Module is already preloaded with options.
 
 * Wed Aug 23 2023 Simone Caronni <negativo17@gmail.com> - 5.8.0-1
 - Update to 5.8.0.
