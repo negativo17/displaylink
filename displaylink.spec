@@ -23,7 +23,7 @@
 
 Name:       displaylink
 Version:    6.1.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -46,7 +46,6 @@ BuildRequires:  systemd-rpm-macros
 Requires:   evdi-kmod >= 1.14.1
 Requires:   libevdi >= 1.14.1
 Requires:   logrotate
-Requires:   xorg-x11-server-Xorg
 
 Provides:   evdi-kmod-common >= 1.14.1
 
@@ -54,6 +53,17 @@ Provides:   evdi-kmod-common >= 1.14.1
 This adds support for HDMI/VGA adapters built upon the DisplayLink DL-6xxx,
 DL-5xxx, DL-41xx and DL-3xxx series of chipsets. This includes numerous docking
 stations, USB monitors, and USB adapters.
+
+%if 0%{?fedora} || 0%{?rhel} < 10
+%package -n xorg-x11-displaylink
+Summary:        X.org X11 DisplayLink driver and extensions
+Requires:       %{name}%{?_isa} = %{?epoch:%{epoch}:}%{version}
+Requires:       xorg-x11-server-Xorg%{?_isa}
+Supplements:    (displaylink and xorg-x11-server-Xorg)
+
+%description -n xorg-x11-displaylink
+The DisplayLink X.org X11 driver and associated components.
+%endif
 
 %prep
 %autosetup
@@ -88,8 +98,10 @@ install -p -m644 %{SOURCE11} %{buildroot}%{_unitdir}/
 install -p -m755 %{SOURCE12} %{buildroot}%{_systemd_util_dir}/system-sleep/%{name}
 install -p -m644 %{SOURCE13} %{buildroot}%{_presetdir}/
 
+%if 0%{?fedora} || 0%{?rhel} < 10
 # X.org stuff
 cp -a %{SOURCE14} %{buildroot}%{_sysconfdir}/X11/xorg.conf.d/
+%endif
 
 # logrotate
 cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
@@ -111,11 +123,18 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %{_presetdir}/95-%{name}.preset
 %{_systemd_util_dir}/system-sleep/%{name}
 %{_udevrulesdir}/99-%{name}.rules
-%{_sysconfdir}/X11/xorg.conf.d/20-%{name}.conf
 %{_libexecdir}/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
+%if 0%{?fedora} || 0%{?rhel} < 10
+%files -n xorg-x11-displaylink
+%{_sysconfdir}/X11/xorg.conf.d/20-%{name}.conf
+%endif
+
 %changelog
+* Sat Feb 08 2025 Simone Caronni <negativo17@gmail.com> - 6.1.0-2
+- Split out X.org components and requirements. Drop them on el10+.
+
 * Wed Oct 30 2024 Simone Caronni <negativo17@gmail.com> - 6.1.0-1
 - Update to 6.1.0.
 
