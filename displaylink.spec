@@ -22,7 +22,7 @@
 %endif
 
 Name:       displaylink
-Version:    6.2.0
+Version:    6.3.0
 Release:    1%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
@@ -132,6 +132,9 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %endif
 
 %changelog
+* Fri Jun 19 2026 Simone Caronni <negativo17@gmail.com> - 6.3.0-1
+- Update to 6.3.0.
+
 * Mon Sep 15 2025 Simone Caronni <negativo17@gmail.com> - 6.2.0-1
 - Update to 6.2.0.
 
