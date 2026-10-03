@@ -23,7 +23,7 @@
 
 Name:       displaylink
 Version:    6.3.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -37,10 +37,13 @@ Source12:   %{name}
 Source13:   95-%{name}.preset
 Source14:   20-%{name}.conf
 Source15:   %{name}.logrotate
+Source16:   com.displaylink.driver.metainfo.xml
+Source17:   com.displaylink.driver.png
 
 ExclusiveArch:  %{ix86} x86_64 armv7hl aarch64
 
 BuildRequires:  chrpath
+BuildRequires:  libappstream-glib
 BuildRequires:  systemd-rpm-macros
 
 Requires:   evdi-kmod >= 1.14.1
@@ -106,6 +109,13 @@ cp -a %{SOURCE14} %{buildroot}%{_sysconfdir}/X11/xorg.conf.d/
 # logrotate
 cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
+# AppStream metadata
+install -p -m 0644 -D %{SOURCE16} %{buildroot}%{_metainfodir}/com.displaylink.driver.metainfo.xml
+install -p -m 0644 -D %{SOURCE17} %{buildroot}%{_datadir}/pixmaps/com.displaylink.driver.png
+
+%check
+appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.displaylink.driver.metainfo.xml
+
 %post
 %systemd_post %{name}.service
 
@@ -123,6 +133,8 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %{_presetdir}/95-%{name}.preset
 %{_systemd_util_dir}/system-sleep/%{name}
 %{_udevrulesdir}/99-%{name}.rules
+%{_datadir}/pixmaps/com.displaylink.driver.png
+%{_metainfodir}/com.displaylink.driver.metainfo.xml
 %{_libexecdir}/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
@@ -132,6 +144,9 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %endif
 
 %changelog
+* Sat Oct 03 2026 Simone Caronni <negativo17@gmail.com> - 6.3.0-2
+- Add AppStream metadata.
+
 * Fri Jun 19 2026 Simone Caronni <negativo17@gmail.com> - 6.3.0-1
 - Update to 6.3.0.
 

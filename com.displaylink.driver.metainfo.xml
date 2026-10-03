@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="driver">
+  <id>com.displaylink.driver</id>
+  <name>DisplayLink USB Graphics Driver</name>
+  <summary>Driver for DisplayLink USB docking stations, monitors and display adapters</summary>
+  <developer id="com.synaptics">
+    <name>Synaptics Incorporated</name>
+  </developer>
+  <!-- appstream-builder drops <developer> from the repository catalog -->
+  <developer_name>Synaptics Incorporated</developer_name>
+  <icon type="local">/usr/share/pixmaps/com.displaylink.driver.png</icon>
+  <description>
+    <p>This adds support for HDMI, DisplayPort and VGA outputs on devices built upon the DisplayLink DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx series of chipsets. This includes numerous docking stations, USB monitors and USB display adapters.</p>
+  </description>
+  <keywords>
+    <keyword>DisplayLink</keyword>
+    <keyword>DisplayPort</keyword>
+    <keyword>HDMI</keyword>
+    <keyword>Monitor</keyword>
+    <keyword>Synaptics</keyword>
+    <keyword>USB</keyword>
+    <keyword>VGA</keyword>
+    <keyword>dock</keyword>
+    <keyword>docking station</keyword>
+    <keyword>driver</keyword>
+  </keywords>
+  <!-- DisplayLinkManager drives every device with the DisplayLink USB vendor ID -->
+  <provides>
+    <modalias>usb:v17E9p*</modalias>
+  </provides>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <url type="homepage">https://www.synaptics.com/products/displaylink-graphics</url>
+  <url type="help">https://support.displaylink.com/</url>
+  <update_contact>negativo17@gmail.com</update_contact>
+</component>
