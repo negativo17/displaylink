@@ -23,7 +23,7 @@
 
 Name:       displaylink
 Version:    6.3.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -34,7 +34,6 @@ Source10:   99-%{name}.rules
 Source11:   %{name}.service
 # Extracted from service-installer.sh:
 Source12:   %{name}
-Source13:   95-%{name}.preset
 Source14:   20-%{name}.conf
 Source15:   %{name}.logrotate
 Source16:   com.displaylink.driver.metainfo.xml
@@ -83,7 +82,6 @@ mkdir -p \
     %{buildroot}%{_libexecdir}/%{name}/ \
     %{buildroot}%{_udevrulesdir}/ \
     %{buildroot}%{_unitdir}/ \
-    %{buildroot}%{_presetdir}/ \
     %{buildroot}%{_systemd_util_dir}/system-sleep/ \
     %{buildroot}%{_sysconfdir}/X11/xorg.conf.d/ \
     %{buildroot}%{_sysconfdir}/logrotate.d/ \
@@ -99,7 +97,6 @@ cp -a %{SOURCE10} %{buildroot}%{_udevrulesdir}/
 # systemd stuff
 install -p -m644 %{SOURCE11} %{buildroot}%{_unitdir}/
 install -p -m755 %{SOURCE12} %{buildroot}%{_systemd_util_dir}/system-sleep/%{name}
-install -p -m644 %{SOURCE13} %{buildroot}%{_presetdir}/
 
 %if 0%{?fedora} || 0%{?rhel} < 10
 # X.org stuff
@@ -130,7 +127,6 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.displaylink.driv
 %doc DisplayLink*.txt
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_unitdir}/displaylink.service
-%{_presetdir}/95-%{name}.preset
 %{_systemd_util_dir}/system-sleep/%{name}
 %{_udevrulesdir}/99-%{name}.rules
 %{_datadir}/pixmaps/com.displaylink.driver.png
@@ -144,6 +140,9 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.displaylink.driv
 %endif
 
 %changelog
+* Thu Oct 08 2026 Simone Caronni <negativo17@gmail.com> - 6.3.0-3
+- Drop leftover preset.
+
 * Sat Oct 03 2026 Simone Caronni <negativo17@gmail.com> - 6.3.0-2
 - Add AppStream metadata.
 
