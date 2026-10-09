@@ -2,18 +2,19 @@
 
 # https://www.synaptics.com/products/displaylink-graphics/downloads/ubuntu
 
-VERSION=6.3.0
-ZIP="DisplayLink USB Graphics Software for Ubuntu6.3-EXE.zip"
+VERSION=6.4.0
+ZIP="DisplayLink USB Graphics Software for Ubuntu6.4-EXE.zip"
 
 mkdir displaylink-$VERSION
 pushd displaylink-$VERSION
 
 unzip ../"$ZIP"
 
-chmod +x displaylink-driver-$VERSION*.run
-./displaylink-driver-$VERSION*.run --noexec --keep --target .
+chmod +x run/displaylink-driver-$VERSION*.run
+./run/displaylink-driver-$VERSION*.run --noexec --keep --nox11 --target .
 
-rm -fr evdi.tar.gz displaylink-driver-$VERSION*.run displaylink-$VERSION.zip
+mv run/*Release\ Notes.txt .
+rm -fr run evdi.tar.gz displaylink-driver-$VERSION*.run displaylink-$VERSION.zip
 find . -name "libusb*.so*" -delete
 
 popd

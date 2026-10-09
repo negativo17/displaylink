@@ -22,8 +22,8 @@
 %endif
 
 Name:       displaylink
-Version:    6.3.0
-Release:    3%{?dist}
+Version:    6.4.0
+Release:    1%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -45,11 +45,11 @@ BuildRequires:  chrpath
 BuildRequires:  libappstream-glib
 BuildRequires:  systemd-rpm-macros
 
-Requires:   evdi-kmod >= 1.14.1
-Requires:   libevdi >= 1.14.1
+Requires:   evdi-kmod >= 1.15.1
+Requires:   libevdi >= 1.15.1
 Requires:   logrotate
 
-Provides:   evdi-kmod-common >= 1.14.1
+Provides:   evdi-kmod-common >= 1.15.1
 
 %description
 This adds support for HDMI/VGA adapters built upon the DisplayLink DL-6xxx,
@@ -140,6 +140,12 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.displaylink.driv
 %endif
 
 %changelog
+* Fri Oct 09 2026 Simone Caronni <negativo17@gmail.com> - 6.4.0-1
+- Update to 6.4.0.
+- Match DisplayLink devices in udev rules by vendor ID, do not block udev when
+  stopping the service.
+- Disable USB3 link power management on DisplayLink ports, like upstream.
+
 * Thu Oct 08 2026 Simone Caronni <negativo17@gmail.com> - 6.3.0-3
 - Drop leftover preset.
 
