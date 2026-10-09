@@ -23,7 +23,7 @@
 
 Name:       displaylink
 Version:    5.8.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -120,6 +120,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/com.displaylin
 %postun
 %systemd_postun_with_restart %{name}.service
 
+# Older packages enabled the service at boot through a preset
+%triggerpostun -- %{name} < 5.8.0-2
+systemctl --no-reload disable %{name}.service > /dev/null 2>&1 || :
+
 %files
 %license LICENSE 3rd_party_licences.txt
 %doc DisplayLink*.txt
@@ -138,6 +142,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/com.displaylin
 %endif
 
 %changelog
+* Fri Oct 09 2026 Simone Caronni <negativo17@gmail.com> - 5.8.0-3
+- Disable the service enabled at boot by the preset of older packages.
+
 * Fri Oct 09 2026 Simone Caronni <negativo17@gmail.com> - 5.8.0-2
 - Fix evdi requirements, move evdi-kmod-common provide to libevdi.
 - Drop leftover build requirements and preset.
