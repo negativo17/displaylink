@@ -49,8 +49,6 @@ Requires:   evdi-kmod >= 1.15.1
 Requires:   libevdi >= 1.15.1
 Requires:   logrotate
 
-Provides:   evdi-kmod-common >= 1.15.1
-
 %description
 This adds support for HDMI/VGA adapters built upon the DisplayLink DL-6xxx,
 DL-5xxx, DL-41xx and DL-3xxx series of chipsets. This includes numerous docking
@@ -142,6 +140,7 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.displaylink.driv
 %changelog
 * Fri Oct 09 2026 Simone Caronni <negativo17@gmail.com> - 6.4.0-1
 - Update to 6.4.0.
+- Move evdi-kmod-common provide to libevdi.
 - Match DisplayLink devices in udev rules by vendor ID, do not block udev when
   stopping the service.
 - Disable USB3 link power management on DisplayLink ports, like upstream.
