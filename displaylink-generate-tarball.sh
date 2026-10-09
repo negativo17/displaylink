@@ -12,7 +12,7 @@ wget $ZIP -O displaylink-$VERSION.zip
 unzip displaylink-$VERSION.zip
 
 chmod +x displaylink-driver-$VERSION*.run
-./displaylink-driver-$VERSION*.run --noexec --keep --target .
+./displaylink-driver-$VERSION*.run --noexec --keep --nox11 --target .
 
 rm -fr evdi.tar.gz displaylink-driver-$VERSION*.run displaylink-$VERSION.zip __MACOSX/
 find . -name "libusb*.so*" -delete

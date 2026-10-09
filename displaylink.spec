@@ -23,7 +23,7 @@
 
 Name:       displaylink
 Version:    5.8.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -32,30 +32,38 @@ Source1:    %{name}-generate-tarball.sh
 
 Source10:   99-%{name}.rules
 Source11:   %{name}.service
-# Extracted from displaylink-installer.sh:
+# Extracted from service-installer.sh:
 Source12:   %{name}
-Source13:   95-%{name}.preset
 Source14:   20-%{name}.conf
 Source15:   %{name}.logrotate
+Source16:   com.displaylink.driver.metainfo.xml
+Source17:   com.displaylink.driver.png
 
 ExclusiveArch:  %{ix86} x86_64 armv7hl aarch64
 
 BuildRequires:  chrpath
-BuildRequires:  gcc-c++
-BuildRequires:  make
+BuildRequires:  libappstream-glib
 BuildRequires:  systemd-rpm-macros
 
-Requires:   evdi-kmod >= 1.13.1
-Requires:   libevdi >= 1.13.1
+Requires:   evdi-kmod >= 1.14.1
+Requires:   libevdi >= 1.14.1
 Requires:   logrotate
-Requires:   xorg-x11-server-Xorg
-
-Provides:   evdi-kmod-common >= 1.13.1
 
 %description
 This adds support for HDMI/VGA adapters built upon the DisplayLink DL-6xxx,
 DL-5xxx, DL-41xx and DL-3xxx series of chipsets. This includes numerous docking
 stations, USB monitors, and USB adapters.
+
+%if 0%{?fedora} || 0%{?rhel} < 10
+%package -n xorg-x11-displaylink
+Summary:        X.org X11 DisplayLink driver and extensions
+Requires:       %{name}%{?_isa} = %{?epoch:%{epoch}:}%{version}
+Requires:       xorg-x11-server-Xorg%{?_isa}
+Supplements:    (displaylink and xorg-x11-server-Xorg)
+
+%description -n xorg-x11-displaylink
+The DisplayLink X.org X11 driver and associated components.
+%endif
 
 %prep
 %autosetup
@@ -72,7 +80,6 @@ mkdir -p \
     %{buildroot}%{_libexecdir}/%{name}/ \
     %{buildroot}%{_udevrulesdir}/ \
     %{buildroot}%{_unitdir}/ \
-    %{buildroot}%{_presetdir}/ \
     %{buildroot}%{_systemd_util_dir}/system-sleep/ \
     %{buildroot}%{_sysconfdir}/X11/xorg.conf.d/ \
     %{buildroot}%{_sysconfdir}/logrotate.d/ \
@@ -88,13 +95,21 @@ cp -a %{SOURCE10} %{buildroot}%{_udevrulesdir}/
 # systemd stuff
 install -p -m644 %{SOURCE11} %{buildroot}%{_unitdir}/
 install -p -m755 %{SOURCE12} %{buildroot}%{_systemd_util_dir}/system-sleep/%{name}
-install -p -m644 %{SOURCE13} %{buildroot}%{_presetdir}/
 
+%if 0%{?fedora} || 0%{?rhel} < 10
 # X.org stuff
 cp -a %{SOURCE14} %{buildroot}%{_sysconfdir}/X11/xorg.conf.d/
+%endif
 
 # logrotate
 cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+
+# AppStream metadata
+install -p -m 0644 -D %{SOURCE16} %{buildroot}%{_metainfodir}/com.displaylink.driver.metainfo.xml
+install -p -m 0644 -D %{SOURCE17} %{buildroot}%{_datadir}/pixmaps/com.displaylink.driver.png
+
+%check
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/com.displaylink.driver.metainfo.xml
 
 %post
 %systemd_post %{name}.service
@@ -110,14 +125,28 @@ cp -a %{SOURCE15} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %doc DisplayLink*.txt
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_unitdir}/displaylink.service
-%{_presetdir}/95-%{name}.preset
 %{_systemd_util_dir}/system-sleep/%{name}
 %{_udevrulesdir}/99-%{name}.rules
-%{_sysconfdir}/X11/xorg.conf.d/20-%{name}.conf
+%{_datadir}/pixmaps/com.displaylink.driver.png
+%{_metainfodir}/com.displaylink.driver.metainfo.xml
 %{_libexecdir}/%{name}
 %dir %{_localstatedir}/log/%{name}/
 
+%if 0%{?fedora} || 0%{?rhel} < 10
+%files -n xorg-x11-displaylink
+%{_sysconfdir}/X11/xorg.conf.d/20-%{name}.conf
+%endif
+
 %changelog
+* Fri Oct 09 2026 Simone Caronni <negativo17@gmail.com> - 5.8.0-2
+- Fix evdi requirements, move evdi-kmod-common provide to libevdi.
+- Drop leftover build requirements and preset.
+- Split out X.org components and requirements.
+- Add AppStream metadata.
+- Match DisplayLink devices in udev rules by vendor ID, do not block udev when
+  stopping the service.
+- Disable USB3 link power management on DisplayLink ports, like upstream.
+
 * Wed Aug 23 2023 Simone Caronni <negativo17@gmail.com> - 5.8.0-1
 - Update to 5.8.0.
 
