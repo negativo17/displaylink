@@ -23,7 +23,7 @@
 
 Name:       displaylink
 Version:    6.4.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    DisplayLink VGA/HDMI driver for DL-6xxx, DL-5xxx, DL-41xx and DL-3xxx adapters
 License:    DisplayLink Software License Agreement
 
@@ -120,6 +120,10 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.displaylink.driv
 %postun
 %systemd_postun_with_restart %{name}.service
 
+# Older packages enabled the service at boot through a preset
+%triggerpostun -- %{name} < 6.3.0-3
+systemctl --no-reload disable %{name}.service > /dev/null 2>&1 || :
+
 %files
 %license LICENSE 3rd_party_licences.txt
 %doc DisplayLink*.txt
@@ -138,6 +142,9 @@ appstream-util validate --nonet %{buildroot}%{_metainfodir}/com.displaylink.driv
 %endif
 
 %changelog
+* Fri Oct 09 2026 Simone Caronni <negativo17@gmail.com> - 6.4.0-2
+- Disable the service enabled at boot by the preset of older packages.
+
 * Fri Oct 09 2026 Simone Caronni <negativo17@gmail.com> - 6.4.0-1
 - Update to 6.4.0.
 - Move evdi-kmod-common provide to libevdi.
